@@ -5,16 +5,26 @@ sudo apt install ansible -y
 
 ansible --version
 
+3. Creating an Ansible Inventory
+
+An inventory file lists the hosts you want to manage. For this experiment, you can use the local host.
+
+Create an Inventory File
+
+1. Open your text editor to create a file called `hosts.ini`:
 gedit hosts.ini
 
+
+1. Add the following content to define the local host:
 [local]
 localhost ansible_connection=local
 
+
 gedit setup.yml
 
+3. Save and exit the file.
 
 
----
 - name: Basic Server Setup
   hosts: local
   become: yes # Use privilege escalation (sudo)
