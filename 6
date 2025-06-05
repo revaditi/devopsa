@@ -1,19 +1,15 @@
-# Experiment 8 - Jenkins and Ansible
-
-## 1. Create a New Jenkins Job (Freestyle Project)
+1. Create a New Jenkins Job (Freestyle Project)
 
 1. Log into Jenkins:
-Open your browser and navigate to your Jenkins URL (e.g., [`http://localhost:8080`](http://localhost:8080)).
+
+(http://localhost:8080)).
+
 2. Create a New Job:
     - Click "New Item" on the Jenkins dashboard.
-    - Enter Item Name: e.g., `HelloMaven-CI`. Don’t change the project name (if a project with this name already exists then delete the existing project),
+    - Enter Item Name: e.g., `HelloMaven-CI`.
     - Select "Freestyle project" and click "OK".
 
-![image.png](attachment:5d1c05a1-c000-4310-a98a-3c9bb4302d57:image.png)
-
----
-
-## 2. Configure Source Code Management (SCM)
+2. Configure Source Code Management (SCM)
 
 Scroll to the "Source Code Management" Section:
 
@@ -22,11 +18,8 @@ Scroll to the "Source Code Management" Section:
 - Credentials: If the repository is private, click "Add" and provide the necessary credentials. (Not needed for the given public repository).
 - Branch Specifier: (e.g., `*/main` or `*/master`). Use `*/main` if you are using above link.
 
-![image.png](attachment:dbe57266-913c-489b-bb8e-eeccad7ef9e4:image.png)
 
----
-
-## 3. Add Build Steps
+3. Add Build Steps
 
 1. Scroll Down to the "Build" Section.
 2. Add the Maven Build Step:
@@ -36,39 +29,24 @@ Click "Add build step" and select **"Execute shell".**
     
     To find the full path to your `mvn` executable on open terminal in Ubuntu and run:
     
-    ```bash
     which mvn
-    ```
-    
-    ![image.png](attachment:479412d4-99fa-48aa-92ad-040335945a55:image.png)
-    
-    The output will give you the full path (e.g., `/usr/bin/mvn` or `/opt/maven/bin/mvn`). Use this path in the command below in Jenkins Build Action Shell.
-    
-    ```bash
-    #/path/to/your/maven/bin/mvn clean package
-    # Example:
-    /usr/bin/mvn clean package
-    ```
-    
+   
+    /path/to/your/maven/bin/mvn clean package
+   
 3. Add the Ansible Deployment Step:
 Click "Add build step" again and select "Execute shell" (or "Execute Windows batch command" on Windows).
     
     Configure the Shell Command:
-    In the command box, add a command to trigger your Ansible playbook.
     
-    **Note:** It is highly recommended to upload your `hosts.ini` and `deploy.yml` files to your GitHub repository alongside your project code. This simplifies referencing them in Jenkins and keeps your automation code version-controlled.
-    
-    If your files are in the root of your repository (follow this command if you are using given github link), the command would be:
-    
-    ```bash
+
     ansible-playbook -i hosts.ini deploy.yml
-    ```
+    
     
     If you are not storing them in GitHub, use the full paths:
     
-    ```bash
+   
     ansible-playbook -i /path/to/hosts.ini /path/to/deploy.yml
-    ```
+  
     
     Note:
     
