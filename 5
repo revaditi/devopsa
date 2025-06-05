@@ -11,19 +11,34 @@ An inventory file lists the hosts you want to manage. For this experiment, you c
 
 Create an Inventory File
 
+
+
 1. Open your text editor to create a file called `hosts.ini`:
+
 gedit hosts.ini
 
 
-1. Add the following content to define the local host:
+2. Add the following content to define the local host:
+
 [local]
 localhost ansible_connection=local
-
 
 gedit setup.yml
 
 3. Save and exit the file.
 
+4. Writing a Basic Ansible Playbook
+
+You will now create a simple playbook that performs two common tasks:
+
+- Updating the apt cache
+- Installing a package (e.g., curl)
+
+5. Create the Playbook File
+Open your text editor to create a file called setup.yml:
+gedit setup.yml
+​
+Add the following YAML content:
 
 - name: Basic Server Setup
   hosts: local
@@ -39,12 +54,9 @@ gedit setup.yml
         state: present
 
 
+6. Running the Ansible Playbook
 
+1. Execute the Playbook
 
-
-
+In your terminal, run the following command:
 sudo ansible-playbook -i hosts.ini setup.yml
-
-
-
-
