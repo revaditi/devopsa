@@ -73,6 +73,34 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 
 
+#when we don't know Jenkins username and passwaord while we r opening localhost:8080
+run these code:
+1.sudo systemctl stop jenkins
+2.sudo gedit /var/lib/jenkins/config.xml
+
+after running this an text editor will open there
+fine this line
+
+<useSecurity>true</useSecurity>
+
+make this true to false
+
+<useSecurity>false</useSecurity>
+
+3.Save and exit the file
+
+4.sudo chown jenkins:
+
+jenkins /var/lib/jenkins/config.xml
+
+5.sudo systemctl start jenkins
+6.sudo systemctl status Jenkins
+open web browers:(localhost:8080)
+there signin will be skipped to dashboard
+
+
+
+
 ## 1. Prepare Your Project on GitHub
 
 
