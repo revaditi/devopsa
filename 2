@@ -1,161 +1,50 @@
-# Experiment 1 - Installation of Maven and Gradle
-
-# 🛠️ Prerequisites
-
-### 1. Install Java 17 (or higher)
-
-```bash
 sudo apt update
 sudo apt install openjdk-17-jdk -y
-```
 
-### 2. Verify Java Installation
-
-```bash
 java --version
-```
 
-### 3. Set Java 17 (or higher) as Default if it’s not already set
-
-```bash
 sudo update-alternatives --config java
-```
 
-*Follow the prompts to select Java 17 (or higher).*
-
-![image.png](attachment:6192e77a-0a0c-43fd-a4ee-d46c6f79a1cd:image.png)
-
----
-
-# 🧹 Remove Existing Gradle (Only if Present)
-
-### 1. Check if Gradle is Installed
-
-```bash
 gradle -v
-```
 
-**If gradle is installed then follow the following steps to remove the exsisting gradle -**
-
-### 2. Remove Gradle Installed via APT
-
-```bash
 sudo apt remove gradle -y
-```
 
-### 3. Remove Gradle Installed via SDKMAN
-
-First check if SDKMAN is installed:
-
-```bash
 ls ~/.sdkman
-```
 
-If it exists, then uninstall Gradle using:
-
-```bash
 sdk uninstall gradle <version?> --force
 
-#Replace <version> with the installed version for example if version was 8.13 the line would be - 
-#sdk uninstall gradle 8.13 —force
-```
-
----
-
-## 📦 Install Maven
-
-### 1. Install Maven
-
-```bash
 sudo apt install maven -y
-```
 
-### 2. Verify Maven Installation
-
-```bash
 mvn -version
-```
 
-![image.png](attachment:87e88bae-4d71-404b-a1a1-c1dae6247f79:image.png)
-
----
-
-# 📦 Install Gradle 8.14
-
-### 1. Download and Extract Gradle
-
-```bash
 wget https://services.gradle.org/distributions/gradle-8.14-bin.zip -P /tmp
 sudo unzip -d /opt/gradle /tmp/gradle-8.14-bin.zip
-```
 
-### 2. Set Environment Variables Permanently (for Bash)
-
-Modify bash command file by running the following command:
-
-```bash
 gedit ~/.bashrc
-```
 
-**At the end of the file, add the following lines:**
-
-```bash
 export GRADLE_HOME=/opt/gradle/gradle-8.14
 export PATH=${GRADLE_HOME}/bin:${PATH}
-```
 
-Save the file.
-
-Then to apply the changes run  the following in terminal:
-
-```bash
 source ~/.bashrc
-```
 
-### 3. Verify Gradle Installation
 gradle -v
 
 
-# Experiment 3 - Working with Gradle
-
-## Step 1: Set Up Gradle Project with **Groovy DSL**
-
-### 1. Create and Initialize the Project
-
-```bash
 cd ~
 mkdir HelloGradleGroovy
 cd HelloGradleGroovy
 gradle init --type java-application --dsl groovy --overwrite
-```
 
-**Choose defaults by pressing Enter for each prompt.**
 
-![Screenshot_20250515_164549.png](attachment:066cffc1-584f-49d8-b644-6fb4f3768772:Screenshot_20250515_164549.png)
 
-### 2. Verify Project Structure
-
-The `gradle init` command creates a standard project layout. To view this structure in your terminal, you can use the `tree` command.
-
-Run the following command in your project's root directory (`HelloGradleGroovy`):
-
-```bash
 tree
-```
 
-![Screenshot_20250515_164932.png](attachment:f649c28b-c5b4-4492-a404-3c203c8e1b94:Screenshot_20250515_164932.png)
 
-### 3. Update `app/build.gradle`
 
-Open the file:
-
-```bash
 gedit app/build.gradle
-```
 
-Replace its contents with:
 
-```groovy
+
 plugins {
     // Apply the Java plugin for compiling Java code
     id 'java'
@@ -190,86 +79,46 @@ task hello {
         println 'Hello, Gradle!'
     }
 }
-```
 
-### 4. Dependency Management (For Information Only – Can Be Skipped)
 
-Dependencies are declared in the `dependencies` block. Gradle resolves them from the repositories configured above, like Maven Central.
 
-Example:
 
-```groovy
+
+
 dependencies{
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0' 
     // Example: Adding a test dependency
 }
-```
 
-Gradle will download these automatically during the build process.
 
-### 5. Running and Verifying Your Gradle Project
 
-- **Build the Project:** Compile, test, and package your application:
-    
-    ```bash
-    gradle build
-    ```
-    
-- **Run the Application:** Execute the main class:
-    
-    ```bash
-    gradle run
-    ```
-    
-- **Execute a Custom Task:** Run your custom task by name:
-    
-    ```bash
-    gradle hello
-    ```
-    
+gradle build
 
-![Screenshot_20250515_171018.png](attachment:e8aaa67d-b922-4025-b04b-6dd23e5f50f5:Screenshot_20250515_171018.png)
+gradle run
 
----
+gradle hello
 
-## Step 2: Set Up Gradle Project with **Kotlin DSL**
 
-### 1. Create and Initialize a new Project in a new directory
 
-```bash
 cd ~
 mkdir HelloGradleKotlin
 cd HelloGradleKotlin
 gradle init --type java-application --dsl kotlin --overwrite
-```
 
-**Choose defaults by pressing Enter for each prompt.**
 
-![Screenshot_20250515_170030.png](attachment:fe24c01b-b99b-421c-86b9-dd637a117256:Screenshot_20250515_170030.png)
 
-### 2. Verify Project Structure
 
-The `gradle init` command creates a standard project layout. To view this structure in your terminal, you can use the `tree` command.
-
-Run the following command in your project's root directory (`HelloGradleKotlin`):
-
-```bash
 tree
-```
 
-![Screenshot_20250515_170135.png](attachment:5a5d736e-df8a-4237-9404-b179a4820a27:Screenshot_20250515_170135.png)
 
-### 3. Update `app/build.gradle.kts`
 
-Open the file:
 
-```bash
+
 gedit app/build.gradle.kts
-```
 
-Replace its contents with:
 
-```kotlin
+
+
 plugins {
     // Apply the Java plugin for compiling Java code
     java
@@ -302,36 +151,25 @@ tasks.register("hello") {
         println("Hello, Gradle with Kotlin DSL!")
     }
 }
-```
 
-### 4. Dependency Management (For Information Only – Can Be Skipped)
 
-Dependencies are declared in the `dependencies` block. Gradle resolves them from the repositories configured above, like Maven Central.
 
-Example:
 
-```kotlin
+
+
+
+
 dependencies {
     // Example: Adding JUnit Jupiter (JUnit 5) test dependencies
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
 }
-```
 
-Gradle will download these automatically during the build process.
 
-### 5. Running and Verifying Your Gradle Project
 
-- **Build the Project:** Compile, test, and package your application:
-    
-    ```bash
-    gradle build
-    ```
-    
-- **Run the Application:** Execute the main class:
-    
-    ```bash
-    gradle run
-    ```
-    
-- **Execute a Custom Task:** Run your custom task by name:
+
+gradle build
+
+gradle run/
+
 gradle hello
+
