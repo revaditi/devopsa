@@ -153,30 +153,39 @@ gedit build.gradle
 
 
 plugins {
+    // Apply the Java plugin for compiling Java code
     id 'java'
+    // Apply the application plugin to add support for building an application
+    id 'application'
 }
 
-group = 'com.example'
+group = 'org.example'
 version = '1.0'
 
 repositories {
+    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.9'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    // Define your dependencies. Use JUnit Jupiter (JUnit 5) for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    // If using parameterized tests
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
 }
 
-test {
-    useJUnitPlatform()
-}
 application {
-
-    mainClass = 'com.example.App'
+    // Define the main class for the application.
+    mainClass = 'org.example.App'
 }
 
-// You can add other tasks or configurations here as needed
+// A custom task example: printing a greeting
+task hello {
+    doLast {
+        println 'Hello, Gradle!'
+    }
+}
 
 
 
