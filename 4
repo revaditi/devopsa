@@ -1,84 +1,70 @@
 # Experiment 5 - Installing Jenkins
 
-**Important:** Jenkins requires a compatible version of Java. Ensure you have **Java 17** installed on your system before proceeding with the steps below.
-
 ## 1. Update Your System
 
-Open your terminal and ensure your package list is updated and upgrades are applied:
 
-```bash
 sudo apt update
 sudo apt upgrade -y
-```
 
----
+
+
 
 ## 2. Add the Jenkins Repository Key
 
-Download and add the GPG key for the Jenkins repository:
 
-```bash
+
 sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
   https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-```
 
----
+
+
 
 ## 3. Add the Jenkins Repository to Your Sources List
 
-Add the Jenkins stable repository to your system's software sources:
 
-```bash
+
 echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \
   https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
-```
 
----
+
+
 
 ## 4. Update Your Package List and Install Jenkins
 
-Update your package list again to include the Jenkins repository, then install Jenkins:
 
-```bash
+
+
 sudo apt update
 sudo apt install jenkins -y
-```
 
----
+
+
 
 ## 5. Start and Enable the Jenkins Service
 
-Start the Jenkins service and configure it to launch automatically on system boot:
 
-```bash
+
 sudo systemctl start jenkins
 sudo systemctl enable jenkins
-```
 
-Check the status to confirm it's running:
 
-```bash
+
 sudo systemctl status jenkins
-```
 
-Your output should be similar to this:
 
-![image.png](attachment:f498bfc6-fd6f-433c-9c9b-b10b4633ecb8:image.png)
-
----
 
 ## 6. Access Jenkins and Complete Initial Setup
 
-1. Open a web browser and navigate to the Jenkins default port:
     
-    [localhost:8080](http://localhost:8080)
+(http://localhost:8080)
+
+
+ //open a new terminal and add the below comment:
+ 
+   
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
     
-2. You will be prompted to unlock Jenkins. Retrieve the initial administrator password by running the following command in your terminal:
-    
-    ```bash
-    sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-    ```
     
 3. Copy the displayed password and paste it into the "Administrator password" field in your browser. Click "Continue".
 4. On the next screen, click "Install suggested plugins" to install a recommended set of plugins.
@@ -86,26 +72,23 @@ Your output should be similar to this:
 6. You should now see the Jenkins dashboard, ready for use.
 
 
-# Experiment 6 - Jenkins and Github
 
 ## 1. Prepare Your Project on GitHub
 
-Ensure your Java project (either Maven or Gradle) is hosted on GitHub. For this experiment, we will use the following public example repositories:
 
-- **Maven Project:** [`https://github.com/devops-ds/your-maven-project.git`](https://github.com/devops-ds/your-maven-project.git)
-- **Gradle Project:** [`https://github.com/devops-ds/your-gradle-project.git`](https://github.com/devops-ds/your-gradle-project.git)
+- Maven Project: (https://github.com/devops-ds/your-maven-project.git)
+- Gradle Project: (https://github.com/devops-ds/your-gradle-project.git)
 
-**Note:** You are welcome to use your own GitHub repository if you prefer. If you use the links provided above, you will not need to configure credentials as they are public repositories, and the default branch to build is `main`.
 
 Make sure your project has a build file (`pom.xml` for Maven or `build.gradle`/`build.gradle.kts` for Gradle) that can compile your code and generate JUnit test reports (typically XML files).
 
----
+
 
 ## 2. Log in to Jenkins
 
 Open your web browser and go to your Jenkins instance (e.g., `localhost:8080`). Log in with the administrator credentials you created during the initial setup.
 
----
+//if you are asked to do freestyle then do until line number 156 (step 3 to step 9):
 
 ## 3. Create a New Jenkins Job (Freestyle Project)
 
@@ -114,13 +97,9 @@ Open your web browser and go to your Jenkins instance (e.g., `localhost:8080`). 
 3. Select "Freestyle project".
 4. Click "OK".
 
-![image.png](attachment:d29c28f9-9595-4e76-b9ea-b8978a9c3bf0:image.png)
 
----
 
 ## 4. Configure Source Code Management (SCM) for Freestyle
-
-In the job configuration page for your Freestyle project:
 
 1. Scroll down to the "Source Code Management" section.
 2. Select "Git".
@@ -130,13 +109,8 @@ In the job configuration page for your Freestyle project:
 4. If you are using your **own private repository**, you will need to add credentials. Click "Add" next to "Credentials" and provide your GitHub username and password or a personal access token. If using the provided public repositories, no credentials are needed.
 5. Under "Branches to build", ensure `*/main` is specified. If your repository uses a different default branch (like `*/master`), adjust this accordingly. For the provided public repositories, `*/main` is correct.
 
-![image.png](attachment:c1d50134-8dec-4b91-b56c-8babef681638:image.png)
-
----
 
 ## 5. Configure the Build Step for Freestyle
-
-This is where you tell Jenkins how to build your project using Maven or Gradle.
 
 - **If you are building a Maven Project:**
     1. Scroll down to the "Build" section.
@@ -145,71 +119,26 @@ This is where you tell Jenkins how to build your project using Maven or Gradle.
     4. In the "Command" area, enter the full path to your Maven executable followed by the goals you want to run (e.g., `clean install`).
         
         To find the full path to your `mvn` executable on open terminal in Ubuntu and run:
-        
-        ```bash
         which mvn
-        ```
-        
-        ![image.png](attachment:ae482ecb-9a33-48af-9ce3-a51990743394:image.png)
         
         The output will give you the full path (e.g., `/usr/bin/mvn` or `/opt/maven/bin/mvn`). Use this path in the command below.
         
-        ```bash
-        #/path/to/your/maven/bin/mvn clean install
-        # Example:
         /usr/bin/mvn clean install
-        ```
-        
-        ![image.png](attachment:e4d1e36a-c9cb-49fb-bddc-54c6aa65e043:image.png)
-        
-- **If you are building a Gradle Project:**
-    1. Scroll down to the "Build" section.
-    2. Click "Add build step".
-    3. Select "Execute shell".
-    4. In the "Command" area, enter the full path to your Gradle executable followed by the tasks you want to run (e.g., `build`).
-        
-        To find the full path to your `gradle` executable on open terminal in Ubuntu and run:
-        
-        ```bash
-        which gradle
-        ```
-        
-        ![image.png](attachment:ae482ecb-9a33-48af-9ce3-a51990743394:image.png)
-        
-        The output will give you the full path (e.g., `/usr/local/bin/gradle` or `/opt/gradle/bin/gradle`). Use this path in the command below.
-        
-        ```bash
-        #/path/to/your/gradle/bin/gradle build
-        # Example using the path provided:
-        /opt/gradle/gradle-8.13/bin/gradle build
-        ```
-        
-        ![image.png](attachment:78c9f4f5-3492-4722-a48e-3ad941eb07f7:image.png)
-        
-
----
+      
 
 ## 6. Configure Post-Build Actions for Freestyle
-
-To publish the JUnit test reports generated by your build tool so they are visible in the Jenkins UI, follow these steps:
 
 - Scroll down to the "Post-build Actions" section.
 - Click "Add post-build action".
 - Select **"Publish JUnit test result report"**.
     - **Test report XMLs:** Enter the path to the test report XML files generated by your build tool.
         - For Maven Surefire/Failsafe: `**/target/surefire-reports/*.xml`
-        - For Gradle: `**/test-results/**/*.xml`
-    - You can leave other options as default for a basic setup.
 
-![image.png](attachment:033fae83-28b8-4472-856c-03906e78c332:image.png)
-
----
 
 ## 7. Save the Freestyle Job Configuration
 
 Scroll to the bottom of the page and click "Save".
 
----
 
 ## 8. Run the Freestyle Jenkins Job
 
@@ -218,7 +147,6 @@ Scroll to the bottom of the page and click "Save".
 
 Jenkins will now clone your repository, execute the build command, and then process the test report XML files.
 
----
 
 ## 9. Monitor the Freestyle Build and View Results
 
@@ -227,32 +155,26 @@ Jenkins will now clone your repository, execute the build command, and then proc
 3. Click "Console Output" on the left to view the live build logs.
 4. After the build completes, you should see a "Test Result" link on the build's page if test reports were found and published. Click this link to see a summary of your test results.
 
----
 
+
+
+//for pipeline:
 ## 10. Create a New Jenkins Job (Pipeline)
-
-Pipeline is a more modern approach using Groovy scripts to define your build process.
 
 1. On the Jenkins dashboard, click "New Item".
 2. Enter an item name (e.g., `Maven-GitHub-Pipeline` or `Gradle-GitHub-Pipeline`).
 3. Select "Pipeline".
 4. Click "OK".
 
----
 
 ## 11. Configure the Pipeline Script
-
-In the job configuration page for your Pipeline project:
 
 1. Scroll down to the "Pipeline" section.
 2. Under "Definition", select **"Pipeline script"**. This allows you to write or paste the Pipeline script directly into the Jenkins job configuration.
 3. A text area labeled "Script" will appear. This is where you will paste your Groovy Pipeline script.
 
----
 
 ## 12. Example Pipeline Scripts to Paste Directly
-
-Here are basic examples of Groovy Pipeline scripts for Maven and Gradle projects that you can paste directly into the "Script" text area in your Jenkins job configuration. These scripts define stages for checking out code, building, testing, and publishing results.
 
 - **Example Pipeline Script for a Maven Project:**
     
@@ -302,69 +224,13 @@ Here are basic examples of Groovy Pipeline scripts for Maven and Gradle projects
             // Add other post conditions like 'unstable', 'changed' as needed
         }
     }
-    ```
-    
-    **Remember to replace the placeholder paths for `mvn` with the actual full path on your Jenkins agent if you are using the Maven example.**
-    
-  
-    
-- **Example Pipeline Script for a Gradle Project:**
-    
-  
-    pipeline {
-        agent any // Or specify a specific agent label
-    
-        stages {
-            stage('Checkout') {
-                steps {
-                    // Checkout code from your GitHub repository
-                    git url: 'https://github.com/devops-ds/your-gradle-project.git', branch: 'main' // Corrected URL
-                    // If your repository is private, you'll need to add credentials here, e.g.:
-                    // git url: 'https://github.com/devops-ds/your-gradle-project.git', branch: 'main', credentialsId: 'your-credential-id'
-                }
-            }
-    
-            stage('Build') {
-                steps {
-                    // Run Gradle build using the wrapper
-                    sh './gradlew clean build'
-                }
-            }
-    
-            stage('Test') {
-                steps {
-                    // Run tests (if not already run in the build stage)
-                    // This step is often not strictly necessary if './gradlew clean build' already runs tests
-                    sh './gradlew test'
-                }
-            }
-        }
-        post {
-            always {
-                // Archive test reports (modify the path according to your project structure)
-                junit '**/build/test-results/test/*.xml'
-            }
-            success {
-                echo 'Build and tests succeeded!'
-            }
-            failure {
-                echo 'Build or tests failed.'
-            }
-            // Add other post conditions like 'unstable', 'changed' as needed
-        }
-    }
-    ```
-    
-    
-    
 
----
+        
 
 ## 13. Save the Pipeline Job Configuration
 
 Scroll to the bottom of the page and click "Save".
 
----
 
 ## 14. Run the Pipeline Jenkins Job
 
@@ -382,5 +248,3 @@ Jenkins will now execute the stages defined in the Pipeline script you pasted.
 3. You will see a visual representation of the pipeline stages. Click on a stage to see its details.
 4. Click "Console Output" on the left to view the logs for the entire pipeline run.
 5. Similar to the Freestyle job, if test reports are published, you will see a "Test Result" link on the build's page.
-
-This covers setting up both Freestyle and basic Pipeline jobs in Jenkins to build Java projects from GitHub and publish test results.
