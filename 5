@@ -7,25 +7,23 @@ ansible --version
 
 3. Creating an Ansible Inventory
 
-An inventory file lists the hosts you want to manage. For this experiment, you can use the local host.
+  An inventory file lists the hosts you want to manage. For this experiment, you can use the local host.
 
-Create an Inventory File
+  Create an Inventory File
 
+  //Open your text editor to create a file called `hosts.ini`:
 
-
-1. Open your text editor to create a file called `hosts.ini`:
-
-gedit hosts.ini
+  gedit hosts.ini
 
 
-2. Add the following content to define the local host:
+  //Add the following content to define the local host:
 
-[local]
-localhost ansible_connection=local
+  [local]
+  localhost ansible_connection=local
 
-gedit setup.yml
+  gedit setup.yml
 
-3. Save and exit the file.
+  //Save and exit the file.
 
 4. Writing a Basic Ansible Playbook
 
